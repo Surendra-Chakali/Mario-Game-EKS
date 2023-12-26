@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suri-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      env: prod
+  template:
+    metadata:
+      #name: suri-pod
+      labels:
+        env: prod
+    spec:
+      containers:
+        - name: suri-container
+          image: sevenajay/mario:latest 
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: suri-deploy
+spec:
+  selector:
+    env: prod
+  type: LoadBalancer
+  ports:
+    - protocol: tcp
+      port: 80
+      targetPort: 80
